@@ -1,0 +1,85 @@
+:root {
+  --waiting-color: #a539f6;
+  --ready-making-color: #ff8100;
+}
+
+.ipyflow-classic-colors {
+  --waiting-color: rgb(254,0,82);
+  --ready-making-color: rgb(0,197,158);
+}
+
+.waiting-cell .jp-InputCollapser {
+  border: 1px solid var(--waiting-color);
+}
+
+.waiting-cell.jp-mod-selected .jp-Collapser-child {
+  background-color: var(--waiting-color);
+}
+
+.waiting-cell .jp-Collapser:hover > .jp-Collapser-child {
+  background-color: var(--waiting-color);
+}
+
+.jp-Collapser-child.linked-waiting {
+  background-color: var(--waiting-color);
+  opacity: 0.6;
+}
+
+.ready-making-cell .jp-InputCollapser {
+  border: 1px solid var(--ready-making-color);
+}
+
+.ready-making-cell.jp-mod-selected .jp-Collapser-child {
+  background-color: var(--ready-making-color);
+}
+
+.ready-making-cell .jp-Collapser:hover > .jp-Collapser-child {
+  background-color: var(--ready-making-color);
+}
+
+.jp-Collapser-child.linked-ready-maker {
+  background-color: var(--ready-making-color);
+  opacity: 0.6;
+}
+
+/* put input / output cells later since they should take precedence */
+
+.ready-cell .jp-OutputCollapser {
+  border: 1px solid var(--waiting-color);
+}
+
+.ready-cell.jp-mod-selected .jp-OutputCollapser .jp-Collapser-child {
+  background-color: var(--waiting-color);
+}
+
+.ready-cell .jp-OutputCollapser:hover > .jp-Collapser-child {
+  background-color: var(--waiting-color);
+}
+
+.ready-making-input-cell .jp-InputCollapser {
+  border: 1px solid var(--ready-making-color);
+}
+
+.ready-making-input-cell.jp-mod-selected .jp-InputCollapser .jp-Collapser-child {
+  background-color: var(--ready-making-color);
+}
+
+.ready-making-input-cell .jp-InputCollapser:hover > .jp-Collapser-child {
+  background-color: var(--ready-making-color);
+}
+
+/* get rid of the '.' in the dirty indicator since we have appropriated it */
+.jp-Notebook .jp-Cell.jp-mod-dirty .jp-InputPrompt::before {
+  color: var(--jp-warn-color1);
+  content: '';
+}
+
+.jp-Notebook .jp-Cell.ipyflow-slice .jp-InputPrompt::before {
+  color: var(--waiting-color);
+  content: '•';
+}
+
+.jp-Notebook .jp-Cell.ipyflow-slice-execute .jp-InputPrompt::before {
+  color: var(--ready-making-color);
+  content: '•';
+}

@@ -1,0 +1,8 @@
+name: ipyflow
+channels:
+- conda-forge
+dependencies:
+- python=3
+- nodejs
+- jupyterlab>=2
+- pip
