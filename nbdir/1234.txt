@@ -9,4 +9,8 @@ making commit before cell runs!
 we called init in kernel 
 we got called do_execute in kernel
 making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdirafter making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='b65ae0e1b17501792a49fc931dac75773614d08a\n', stderr='')
+we called init in kernel 
+we got called do_execute in kernel
+making commit before cell runs!
 /Users/happy2na/Desktop/fs-ipyflow/nbdir
