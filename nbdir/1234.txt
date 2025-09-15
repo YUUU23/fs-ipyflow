@@ -17,4 +17,9 @@ making commit before cell runs!
 executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we called init in kernel 
 we got called do_execute in kernel
 making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdirafter making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='81d7cda3aff232f3e2459514afd1c1c501b422ee\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702kwargs: {'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': [], 'recordTiming': False, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}we called init in kernel 
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702we got called do_execute in kernel
+making commit before cell runs!
 /Users/happy2na/Desktop/fs-ipyflow/nbdir
