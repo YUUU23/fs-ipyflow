@@ -118,4 +118,7 @@ executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we called init in kernel
 we called init in kernel 
 we got called do_execute in kernel
 making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdirafter making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='4500ea203af430513a62ad51ea43bfe76d28077e\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got called do_execute in kernel
+making commit before cell runs!
 /Users/happy2na/Desktop/fs-ipyflow/nbdir
