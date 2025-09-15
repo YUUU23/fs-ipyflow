@@ -229,3 +229,24 @@ EVERYTHING, KWARGS
 {'cell_meta': {'trusted': True, 'tags': [], 'is_active': True, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
 GOT METADATA!! 
 True
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='6030c13e2665082da224e0967ef6afc742681619\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+CELL IS ACTIVE!!!!! WE WILL REVERT
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'is_active': True, 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+GOT METADATA!! 
+True
