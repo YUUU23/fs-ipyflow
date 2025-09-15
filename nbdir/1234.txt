@@ -1,0 +1,12 @@
+we called init in kernel 
+we got called do_execute in kernel
+making commit before cell runs!
+after making commit CompletedProcess(args=['bash', './script/commit.sh'], returncode=127, stdout='', stderr='bash: ./script/commit.sh: No such file or directory\n')
+we called init in kernel 
+we got called do_execute in kernel
+making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdir after making commit CompletedProcess(args=['bash', './script/commit.sh'], returncode=127, stdout='', stderr='bash: ./script/commit.sh: No such file or directory\n')
+we called init in kernel 
+we got called do_execute in kernel
+making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdir
