@@ -127,4 +127,7 @@ making commit before cell runs!
 /Users/happy2na/Desktop/fs-ipyflow/nbdirafter making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='4eb21ab7d3adee55c129b7e5b1f90727e1b89f74\n', stderr='')
 executed cell: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42we got called do_execute in kernel
 making commit before cell runs!
+/Users/happy2na/Desktop/fs-ipyflow/nbdirafter making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='d3c9ea36d20e7b079762a4858f81cbfe910b3128\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got called do_execute in kernel
+making commit before cell runs!
 /Users/happy2na/Desktop/fs-ipyflow/nbdir
