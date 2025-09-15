@@ -91,3 +91,12 @@ EVERYTHING, KWARGS
 {'cell_meta': {'trusted': True, 'tags': [], 'is_active': True, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
 GOT METADATA!! 
 True
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='d35ef15036f7b55f97f8434abd6529a74d3a2131\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got called before init metadata in kernel
+we set active cell id: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42; 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'is_active': True, 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+GOT METADATA!! 
+True
