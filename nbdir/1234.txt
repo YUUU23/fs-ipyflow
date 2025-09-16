@@ -300,3 +300,19 @@ we got called do_execute in kernel
 making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'should_revert': 'None', 'cellId': '8652f609-693e-454d-ab22-27bd2606754f'}}
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='997b5e1847e30b52389c50809a595a47f21a9ea0\n', stderr='')
+executed cell: 8652f609-693e-454d-ab22-27bd2606754fwe got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'should_revert': 'None', 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
