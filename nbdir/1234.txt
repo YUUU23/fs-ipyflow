@@ -19,3 +19,4 @@ we got called do_execute in kernel
 making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'tags': [], 'should_revert': '', 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
+CELL IS ACTIVE!!!!! WE WILL REVERT revert result: CompletedProcess(args=['bash', '../scripts/revert.sh', '9c331ebfe9b188565d1065bb348231d1aec773a6'], returncode=0, stdout='', stderr='') 
