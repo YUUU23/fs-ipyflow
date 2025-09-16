@@ -423,3 +423,31 @@ making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'tags': [], 'should_revert': 'c32bc2272a68df9fbc6858ddac4f7ca114e5e13a', 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
 CELL IS ACTIVE!!!!! WE WILL REVERT c32bc2272a68df9fbc6858ddac4f7ca114e5e13a 
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='1589b28f68847181fa7cc18e019413610cebeb97\n', stderr='')
+executed cell: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42; 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'should_revert': '1589b28f68847181fa7cc18e019413610cebeb97', 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+CELL IS ACTIVE!!!!! WE WILL REVERT 1589b28f68847181fa7cc18e019413610cebeb97 
