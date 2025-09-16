@@ -407,3 +407,11 @@ making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'tags': [], 'should_revert': '', 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
 CELL IS ACTIVE!!!!! WE WILL REVERT  
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='8359c83e5470936c4f202eb11185fc3bf908b485\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'should_revert': '', 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+CELL IS ACTIVE!!!!! WE WILL REVERT  
