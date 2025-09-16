@@ -20,3 +20,265 @@ making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'tags': [], 'should_revert': '', 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
 CELL IS ACTIVE!!!!! WE WILL REVERT revert result: CompletedProcess(args=['bash', '../scripts/revert.sh', '9c331ebfe9b188565d1065bb348231d1aec773a6'], returncode=0, stdout='', stderr='') 
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='de3377bea00f1d9843c7fe91f6df2decaf0f7e5e\n', stderr='')
+executed cell: 86613698-dc31-48f6-8533-3d9ff9cd9702we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': ['3c5d18f3-4101-4f9d-b047-447c0b607535'], 'recordTiming': False, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
+we got called before init metadata in kernel
+we set active cell id: 8652f609-693e-454d-ab22-27bd2606754f; 8652f609-693e-454d-ab22-27bd2606754f
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'deletedCells': ['3c5d18f3-4101-4f9d-b047-447c0b607535'], 'recordTiming': False, 'cellId': '8652f609-693e-454d-ab22-27bd2606754f'}}
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'deletedCells': ['3c5d18f3-4101-4f9d-b047-447c0b607535'], 'recordTiming': False, 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+we got called before init metadata in kernel
+we set active cell id: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42; 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': ['3c5d18f3-4101-4f9d-b047-447c0b607535'], 'recordTiming': False, 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': [], 'recordTiming': False, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
+we got called before init metadata in kernel
+we set active cell id: 8652f609-693e-454d-ab22-27bd2606754f; 8652f609-693e-454d-ab22-27bd2606754f
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'deletedCells': [], 'recordTiming': False, 'cellId': '8652f609-693e-454d-ab22-27bd2606754f'}}
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'deletedCells': [], 'recordTiming': False, 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+we got called before init metadata in kernel
+we set active cell id: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42; 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': [], 'recordTiming': False, 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': [], 'recordTiming': False, 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
+we got called before init metadata in kernel
+we set active cell id: 8652f609-693e-454d-ab22-27bd2606754f; 8652f609-693e-454d-ab22-27bd2606754f
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'deletedCells': [], 'recordTiming': False, 'cellId': '8652f609-693e-454d-ab22-27bd2606754f'}}
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'deletedCells': [], 'recordTiming': False, 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+we got called before init metadata in kernel
+we set active cell id: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42; 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'deletedCells': [], 'recordTiming': False, 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we called init in kernel 
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'should_revert': 'None', 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
