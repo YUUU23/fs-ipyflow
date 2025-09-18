@@ -67,3 +67,51 @@ we got called do_execute in kernel
 making commit before cell runs!
 EVERYTHING, KWARGS 
 {'cell_meta': {'trusted': True, 'tags': [], 'should_revert': 'None', 'cellId': '541c4a68-0c49-4ea5-bf13-c6dc2d38dd42'}}
+after making commit CompletedProcess(args=['bash', '../scripts/commit.sh'], returncode=0, stdout='0c6ad45477298d88153d0a5f2978a4bd0d971860\n', stderr='')
+executed cell: 541c4a68-0c49-4ea5-bf13-c6dc2d38dd42we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request change_active_cell !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got a request notify_content_changed !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 09979862-b4d4-4651-bb84-48845f384066; 09979862-b4d4-4651-bb84-48845f384066
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'should_revert': '81e18684f2c197c3ccf8843b475d8ced4be5358b', 'cellId': '09979862-b4d4-4651-bb84-48845f384066'}}
+CELL IS ACTIVE!!!!! WE WILL REVERT 81e18684f2c197c3ccf8843b475d8ced4be5358b 
+we got a request change_active_cell !!!
+we called init in kernel 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request change_active_cell !!!
+we got a request compute_exec_schedule !!!
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+called executing schedule calc.
+requests cell id: Noneexecution schedule: dag_basedflow order: in_order
+ 
+we got a request reactivity_cleanup !!!
+we got called before init metadata in kernel
+we set active cell id: 86613698-dc31-48f6-8533-3d9ff9cd9702; 86613698-dc31-48f6-8533-3d9ff9cd9702
+we got called do_execute in kernel
+making commit before cell runs!
+EVERYTHING, KWARGS 
+{'cell_meta': {'trusted': True, 'tags': [], 'should_revert': 'None', 'cellId': '86613698-dc31-48f6-8533-3d9ff9cd9702'}}
