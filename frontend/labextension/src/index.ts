@@ -82,6 +82,7 @@ class IpyflowSessionState {
   cellChildren: { [id: string]: string[] } = {};
   settings: { [key: string]: string } = {};
   lastCellMetadataMap: CellMetadataMap | null = null;
+  commit_map: { [id: string]: string } = {};
 
   gatherCellMetadataAndContent() {
     const cell_metadata_by_id: CellMetadataMap = {};
@@ -113,7 +114,12 @@ class IpyflowSessionState {
   }
 
   executeCells(cells: Cell<ICellModel>[]) {
-    console.log('called execute cells in frontend. ', cells);
+    console.log(
+      'called execute cells in frontend. we need to revert if it is the active cell ',
+      cells
+    );
+    console.log('current active cell: ', this.activeCell);
+
     if (cells.length === 0) {
       console.log('no cells to execute');
       return;
@@ -122,21 +128,56 @@ class IpyflowSessionState {
     for (const cell of cells) {
       // make commit for state
       // if any of them fail, change the [*] to [ ] on subsequent cells
-      CodeCell.execute(cell as CodeCell, this.session).then(() => {
-        console.log('executed ', cell);
-        if (cell.promptNode.textContent?.includes('[*]')) {
-          // can happen if a preceding cell errored
-          cell.setPrompt('');
-        } else {
-          this.executedCells.add(cell.model.id);
+      let active_meta = { should_revert: '' };
+      console.log('active cell id: ', this.activeCell.model.id);
+      console.log('current cell: ', cell.model.id);
+      if (cell && this.activeCell && cell.model && this.activeCell.model) {
+        if (cell.model.id == this.activeCell.model.id) {
+          console.log("IT's ACTIVE CELL!!!");
+          const cid = cell.model.id as string;
+          let hash = 'None';
+          if (cid && cid in this.commit_map) {
+            hash = this.commit_map[cid];
+          }
+          console.log(
+            'getting hash for cell: ',
+            cell.model.id,
+            ' hash: ',
+            hash
+          );
+          active_meta['should_revert'] = hash;
         }
-        if (++numFinished === cells.length) {
-          // wait a tick first to allow the disk changes to propagate up
-          this.isReactivelyExecuting = false;
-          console.log('requesting compute exec schedule from execute cells');
-          setTimeout(() => this.requestComputeExecSchedule(), 0);
+      }
+
+      CodeCell.execute(cell as CodeCell, this.session, active_meta).then(
+        (data) => {
+          console.log('executed ', cell.model.id);
+          if (data && data['content'] && data['content']) {
+            const content = data['content'] as any;
+            const commitHash = content['commit_hash'];
+            const revertedRes = content['reverted'];
+            console.log('Commit: ', commitHash);
+            console.log('Reverted: ', revertedRes);
+            const cid = cell.model.id as string;
+            if (cid) {
+              this.commit_map[cid] = commitHash;
+            }
+            console.log('commit map: ', this.commit_map);
+          }
+          if (cell.promptNode.textContent?.includes('[*]')) {
+            // can happen if a preceding cell errored
+            cell.setPrompt('');
+          } else {
+            this.executedCells.add(cell.model.id);
+          }
+          if (++numFinished === cells.length) {
+            // wait a tick first to allow the disk changes to propagate up
+            this.isReactivelyExecuting = false;
+            console.log('requesting compute exec schedule from execute cells');
+            setTimeout(() => this.requestComputeExecSchedule(), 0);
+          }
         }
-      });
+      );
     }
   }
 

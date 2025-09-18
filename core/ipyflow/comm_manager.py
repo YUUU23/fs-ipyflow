@@ -79,8 +79,8 @@ class CommManager:
 
     def handle(self, request: Dict[str, Any], comm=None) -> None:
         """Handle a comm request by dispatching to the appropriate handler."""
-        with open ('1234.txt', 'a') as f:
-            f.write(f"we got a request {request["type"]} !!!\n")
+        # with open ('1234.txt', 'a') as f:
+        #     f.write(f"we got a request {request["type"]} !!!\n")
         request_type = request["type"]
         handler = self._comm_handlers.get(request_type)
         if handler is None:
@@ -136,8 +136,8 @@ class CommManager:
     ) -> Optional[Dict[str, Any]]:
         """Handle change active cell request."""
         self.flow.set_active_cell(request["active_cell_id"])
-        with open ('1234.txt', 'a') as f:
-            f.write("active cell changed to: ", request["active_cell_id"])
+        # with open ('1234.txt', 'a') as f:
+        #     f.write("active cell changed to: ", request["active_cell_id"])
         return None
 
     def _handle_compute_exec_schedule_impl(
@@ -211,17 +211,17 @@ class CommManager:
             | self.flow.settings.to_json().items()
         )
         
-        try: 
-            with open('1234.txt', 'a') as f:
-                f.write('called executing schedule calc.\n')
-                f.write(f"requests cell id: {request.get('active_cell_id')}")
-                f.write(f"execution schedule: {exec_schedule.value}")
-                f.write(f"flow order: {self.flow.mut_settings.flow_order.value}")
-                f.write("\n \n")
-            # f.write('compute exec schedule with active cell: ', self.flow.active_cell_id)
-        except:
-            with open('1234.txt', 'a') as f:
-                f.write('failed to get active cell id\n')
+        # try: 
+        #     with open('1234.txt', 'a') as f:
+        #         f.write('called executing schedule calc.\n')
+        #         f.write(f"requests cell id: {request.get('active_cell_id')}")
+        #         f.write(f"execution schedule: {exec_schedule.value}")
+        #         f.write(f"flow order: {self.flow.mut_settings.flow_order.value}")
+        #         f.write("\n \n")
+        #     # f.write('compute exec schedule with active cell: ', self.flow.active_cell_id)
+        # except:
+        #     with open('1234.txt', 'a') as f:
+        #         f.write('failed to get active cell id\n')
         response["executed_cells"] = list(cells().all_executed_cell_ids())
         return response
 

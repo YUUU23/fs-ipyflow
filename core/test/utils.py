@@ -112,8 +112,6 @@ def make_flow_fixture(**kwargs) -> Tuple[Any, Any]:
     has_keyword_arg = "cell_id" in inspect.signature(shell().run_cell).parameters
 
     def run_cell(code, cell_id=None, cell_pos=None, ignore_exceptions=False) -> int:
-        with open ('1234.txt', 'a') as f:
-            f.write("run_cell called: ", cell_id)
         nonlocal has_keyword_arg
         next_exec_counter = cells().next_exec_counter()
         shell().execution_count = next_exec_counter

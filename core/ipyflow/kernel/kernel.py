@@ -5,6 +5,7 @@ import logging
 from typing import TYPE_CHECKING, NamedTuple, Optional
 from typing import Type as TypeType
 import subprocess
+from collections import defaultdict
 
 from ipykernel.ipkernel import IPythonKernel
 from IPython import get_ipython
@@ -86,8 +87,6 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
     client_comm: Optional["Comm"] = None
 
     def __init__(self, **kwargs) -> None:
-        with open ('1234.txt', 'a') as f:
-            f.write("we called init in kernel \n")
         super().__init__(**kwargs)
 
         self._initialize()
@@ -194,13 +193,32 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             **kwargs,
         ):
             # make commit on cell execution 
-            with open ('1234.txt', 'a') as f:
-                f.write("we got called do_execute in kernel\n")
-                f.write("making commit before cell runs!\n")
-            script_path = "./script/commit.sh"
-            result = subprocess.run(["bash", script_path], capture_output=True, text=True)
-            with open ('1234.txt', 'a') as f:
-                f.write(f"after making commit {result}\n")
+            super_ = super()
+            # with open ('1234.txt', 'a') as f:
+            #     f.write("we got called do_execute in kernel\n")
+            #     f.write("making commit before cell runs!\n")
+            
+            # revert if the cell is the active cell. 
+            # if kwargs:
+            #     # with open ('1234.txt', 'a') as f:
+            #     #     f.write("EVERYTHING, KWARGS \n")
+            #     #     f.write(f"{kwargs}\n")
+            
+            revert_back = kwargs["cell_meta"]["should_revert"]
+            cell_id = kwargs["cell_meta"]["cellId"]
+            revert_result = ""
+            if revert_back != "None": 
+                revert_script_path = "../scripts/revert.sh"
+                result = subprocess.run(["bash", revert_script_path, revert_back], capture_output=True, text=True)
+                revert_result = f'{result.stdout.strip()}, reverted {revert_back}'
+                # with open ('1234.txt', 'a') as f:
+                #     f.write(f"CELL IS ACTIVE!!!!! WE WILL REVERT {revert_back}, revert result: {result} \n")    
+            
+            commit_script_path = "../scripts/commit.sh"
+            result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
+            # with open ('1234.txt', 'a') as f:
+            #     f.write(f"after making commit {result}\n")
+            #     f.write(f"executed cell: {cell_id}")
             
             super_ = super()
             if self._has_cell_id:
@@ -214,6 +232,8 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                 **kwargs,
             )
             self._maybe_eject()
+            ret["commit_hash"] = result.stdout.strip()
+            ret['reverted'] = revert_result
             return ret
 
     else:
@@ -231,8 +251,6 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             cell_id=None,
             **kwargs,
         ):
-            with open ('1234.txt', 'a') as f:
-                f.write("do execute called: ")
             super_ = super()
             if self._has_cell_id:
                 kwargs["cell_id"] = cell_id
@@ -251,9 +269,6 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                     return ret
 
             result = asyncio.get_event_loop().run_until_complete(_run_cell_func(code))
-            with open ('1234.txt', 'a') as f:
-                f.write("result of code execution? : ", result)
-                f.write('\n')
             self._maybe_eject()
             return result
 
