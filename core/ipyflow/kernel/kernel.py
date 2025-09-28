@@ -206,6 +206,8 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             
             revert_back = kwargs["cell_meta"]["should_revert"]
             cell_id = kwargs["cell_meta"]["cellId"]
+            commit_initial = kwargs["cell_meta"]['should_commit_prior']
+            
             revert_result = ""
             if revert_back != "None": 
                 revert_script_path = "../scripts/revert.sh"
@@ -214,12 +216,15 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                 # with open ('1234.txt', 'a') as f:
                 #     f.write(f"CELL IS ACTIVE!!!!! WE WILL REVERT {revert_back}, revert result: {result} \n")    
             
-            commit_script_path = "../scripts/commit.sh"
-            result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
-            # with open ('1234.txt', 'a') as f:
-            #     f.write(f"after making commit {result}\n")
-            #     f.write(f"executed cell: {cell_id}")
-            
+            initial_commit_result = ""
+            if commit_initial: 
+                commit_script_path = "../scripts/commit.sh"
+                res = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
+                initial_commit_result = res.stdout.strip()
+                # with open ('1234.txt', 'a') as f:
+                #     f.write(f"after making commit {result}\n")
+                #     f.write(f"executed cell: {cell_id}")
+                
             super_ = super()
             if self._has_cell_id:
                 kwargs["cell_id"] = cell_id
@@ -231,9 +236,15 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                 allow_stdin,
                 **kwargs,
             )
+        
             self._maybe_eject()
-            ret["commit_hash"] = result.stdout.strip()
-            ret['reverted'] = revert_result
+            
+            commit_script_path = "../scripts/commit.sh"
+            commit_result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
+            
+            ret["commit_hash"] = commit_result.stdout.strip()
+            ret["reverted"] = revert_result
+            ret["commit_initial"] = initial_commit_result
             return ret
 
     else:

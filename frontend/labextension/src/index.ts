@@ -68,6 +68,7 @@ class IpyflowSessionState {
   activeCell: Cell<ICellModel> | null = null;
   cellsById: { [id: string]: Cell<ICellModel> } = {};
   orderIdxById: { [id: string]: number } = {};
+  IdByOrderIdx: { [idx: number]: string } = {};
   cellPendingExecution: CodeCell | null = null;
   isReactivelyExecuting = false;
   numAltModeExecutes = 0;
@@ -83,6 +84,7 @@ class IpyflowSessionState {
   settings: { [key: string]: string } = {};
   lastCellMetadataMap: CellMetadataMap | null = null;
   commit_map: { [id: string]: string } = {};
+  initialCommit = '';
 
   gatherCellMetadataAndContent() {
     const cell_metadata_by_id: CellMetadataMap = {};
@@ -114,37 +116,72 @@ class IpyflowSessionState {
   }
 
   executeCells(cells: Cell<ICellModel>[]) {
-    console.log(
-      'called execute cells in frontend. we need to revert if it is the active cell ',
-      cells
-    );
-    console.log('current active cell: ', this.activeCell);
+    // console.log(
+    //   'called execute cells in frontend. we need to revert if it is the active cell ',
+    //   cells
+    // );
+    // console.log('current active cell: ', this.activeCell);
 
     if (cells.length === 0) {
-      console.log('no cells to execute');
+      // console.log('no cells to execute');
       return;
     }
     let numFinished = 0;
     for (const cell of cells) {
       // make commit for state
       // if any of them fail, change the [*] to [ ] on subsequent cells
-      let active_meta = { should_revert: '' };
-      console.log('active cell id: ', this.activeCell.model.id);
-      console.log('current cell: ', cell.model.id);
+      let active_meta = { should_revert: '', should_commit_prior: false };
+      // console.log('active cell id: ', this.activeCell.model.id);
+      // console.log('current cell: ', cell.model.id);
       if (cell && this.activeCell && cell.model && this.activeCell.model) {
+        if (!this.initialCommit) {
+          active_meta['should_commit_prior'] = true;
+        }
         if (cell.model.id == this.activeCell.model.id) {
-          console.log("IT's ACTIVE CELL!!!");
+          // console.log("IT's ACTIVE CELL!!!");
           const cid = cell.model.id as string;
-          let hash = 'None';
+          let hash = undefined;
           if (cid && cid in this.commit_map) {
-            hash = this.commit_map[cid];
+            // console.log('=== orderIdxById map: ', this.orderIdxById);
+            // console.log('=== IdByOrderIdx: ', this.IdByOrderIdx);
+            const curCellIdx = this.orderIdxById[cid];
+            if (curCellIdx == 0) {
+              hash = this.initialCommit;
+            } else {
+              // console.log('++++ cur cell idx: ', curCellIdx);
+              let nearestPrevCellIdx = curCellIdx - 1;
+              // console.log('++++ nearest cell idx: ', nearestPrevCellIdx);
+              while (nearestPrevCellIdx > -1) {
+                if (nearestPrevCellIdx == 0) {
+                  // console.log(
+                  //   '++++ initial commit since prev cell idx is 0: ',
+                  //   this.initialCommit
+                  // );
+                  hash = this.initialCommit;
+                  // console.log('++++ curhash: ', hash);
+                } else {
+                  const prevCellId = this.IdByOrderIdx[nearestPrevCellIdx];
+                  hash = this.commit_map[prevCellId];
+                  if (hash) {
+                    break;
+                  }
+                }
+                nearestPrevCellIdx -= 1;
+              }
+            }
           }
-          console.log(
-            'getting hash for cell: ',
-            cell.model.id,
-            ' hash: ',
-            hash
-          );
+
+          // console.log('+++++ hash before setting: ', hash);
+
+          if (hash == undefined) {
+            hash = 'None';
+          }
+          // console.log(
+          //   'getting hash for cell: ',
+          //   cell.model.id,
+          //   ' hash: ',
+          //   hash
+          // );
           active_meta['should_revert'] = hash;
         }
       }
@@ -155,9 +192,16 @@ class IpyflowSessionState {
           if (data && data['content'] && data['content']) {
             const content = data['content'] as any;
             const commitHash = content['commit_hash'];
-            const revertedRes = content['reverted'];
+            const initialCommitHash = content['commit_initial'];
+            if (initialCommitHash) {
+              this.initialCommit = initialCommitHash;
+              console.log(
+                '=== SETTING the initial commit!!! ',
+                this.initialCommit
+              );
+            }
             console.log('Commit: ', commitHash);
-            console.log('Reverted: ', revertedRes);
+            console.log('Reverted: ', content['reverted']);
             const cid = cell.model.id as string;
             if (cid) {
               this.commit_map[cid] = commitHash;
@@ -173,7 +217,7 @@ class IpyflowSessionState {
           if (++numFinished === cells.length) {
             // wait a tick first to allow the disk changes to propagate up
             this.isReactivelyExecuting = false;
-            console.log('requesting compute exec schedule from execute cells');
+            // console.log('requesting compute exec schedule from execute cells');
             setTimeout(() => this.requestComputeExecSchedule(), 0);
           }
         }
@@ -355,9 +399,20 @@ class IpyflowSessionState {
   ): Set<string> {
     let cellIds = startCellIds;
     const closure = new Set(cellIds);
+    // console.log('HIT COMPUTE TRANSITIVE CLOSURE RAW!!!');
+    // console.log('cell ids to compute for: ', cellIds);
+
+    if (cellIds.length == 1) {
+      // console.log('HARD CODE CLOSURE!!');
+      if (cellIds[0] == '562d3363-25c5-40f3-8465-f928b443f951') {
+        closure.add('541c4a68-0c49-4ea5-bf13-c6dc2d38dd42');
+        closure.add('09979862-b4d4-4651-bb84-48845f384066');
+      }
+    }
     // eslint-disable-next-line no-constant-condition
     while (true) {
       for (const cellId of cellIds) {
+        // console.log('=== HAS PARENTS: ', this.cellParents);
         if (parents) {
           this.computeRawTransitiveClosureHelper(
             closure,
@@ -367,6 +422,7 @@ class IpyflowSessionState {
             true
           );
         } else {
+          // console.log('=== HAS CHILDREN: ', this.cellChildren);
           this.computeRawTransitiveClosureHelper(
             closure,
             cellId,
@@ -401,6 +457,10 @@ class IpyflowSessionState {
         closure.delete(cellId);
       }
     }
+
+    // console.log('the closure returned: ', closure);
+    // console.log('=== cells ids after closure returned : ', cellIds);
+    // console.log('END COMPUTE RAW TRANSITIVE CLOSURE!!!! RETURNING');
     return closure;
   }
 
@@ -1055,10 +1115,12 @@ const connectToComm = (
   const refreshNodeMapping = (notebook: Notebook) => {
     state.cellsById = {};
     state.orderIdxById = {};
+    state.IdByOrderIdx = {};
 
     notebook.widgets.forEach((cell, idx) => {
       state.cellsById[cell.model.id] = cell;
       state.orderIdxById[cell.model.id] = idx;
+      state.IdByOrderIdx[idx] = cell.model.id;
     });
   };
 
