@@ -85,6 +85,8 @@ class IpyflowSessionState {
   lastCellMetadataMap: CellMetadataMap | null = null;
   commit_map: { [id: string]: string } = {};
   initialCommit = '';
+  readCells: Set<string> = new Set();
+  writeCells: Set<string> = new Set();
 
   gatherCellMetadataAndContent() {
     const cell_metadata_by_id: CellMetadataMap = {};
@@ -193,6 +195,7 @@ class IpyflowSessionState {
             const content = data['content'] as any;
             const commitHash = content['commit_hash'];
             const initialCommitHash = content['commit_initial'];
+            const sysCall = content['syscall'];
             if (initialCommitHash) {
               this.initialCommit = initialCommitHash;
               console.log(
@@ -202,11 +205,42 @@ class IpyflowSessionState {
             }
             console.log('Commit: ', commitHash);
             console.log('Reverted: ', content['reverted']);
+            console.log('Syscalls: ', content['syscall']);
             const cid = cell.model.id as string;
             if (cid) {
               this.commit_map[cid] = commitHash;
             }
             console.log('commit map: ', this.commit_map);
+
+            // Update parent children dependency to relate
+            // all read cells with write cells.
+            // TODO: Currently doesn't work, map objects are different
+            if (!sysCall.includes('None')) {
+              console.log('entering syscall updating loop: ', sysCall);
+              if (sysCall.trim() == 'read') {
+                console.log('HANDLING READ!!!');
+                this.readCells.add(cid);
+                for (const w_cid of this.writeCells) {
+                  console.log(
+                    'updating read dependency for write cell: ',
+                    w_cid
+                  );
+                  if (!this.cellChildren[w_cid].includes(cid)) {
+                    this.cellChildren[w_cid].push(cid);
+                  }
+                  if (!this.cellParents[cid].includes(w_cid)) {
+                    this.cellParents[cid].push(w_cid);
+                  }
+                }
+                console.log('current read cell: ', this.readCells);
+                console.log('current write cell: ', this.writeCells);
+                console.log('parent after: ', this.cellParents);
+                console.log('children after: ', this.cellChildren);
+              } else if (sysCall.trim() == 'write') {
+                console.log('HANDLING WRITE!!!');
+                this.writeCells.add(cid);
+              }
+            }
           }
           if (cell.promptNode.textContent?.includes('[*]')) {
             // can happen if a preceding cell errored
@@ -269,17 +303,34 @@ class IpyflowSessionState {
     pullReactiveUpdates = false,
     skipFirstCheck = false
   ): void {
+    // console.log(
+    //   '!!!! ENTERING THE COMPUTE RAW TRANSITIVE CLOSURE HELPER: ',
+    //   cellId
+    // );
+    // console.log('The closure is: ', closure, '\n', 'the edges are: ', edges);
     if (!skipFirstCheck && closure.has(cellId)) {
       return;
     }
+
+    // console.log('#### pull reactive updates ');
     if (!pullReactiveUpdates) {
+      // console.log(
+      //   '#### add cell because of pull reactive update: ',
+      //   pullReactiveUpdates
+      // );
       closure.add(cellId);
     }
     const relatives = edges?.[cellId];
     if (relatives === undefined) {
       return;
     }
+
     const prevClosureSize = closure.size;
+
+    // console.log(
+    //   '++++ COMPUTING stuff for relatives through the transitive closure helper: ',
+    //   relatives
+    // );
     relatives.forEach((related) => {
       this.computeRawTransitiveClosureHelper(
         closure,
@@ -288,6 +339,7 @@ class IpyflowSessionState {
         pullReactiveUpdates
       );
     });
+    // console.log('++++ CLOSURE after all relative computation stuff: ', closure);
     if (
       pullReactiveUpdates &&
       (closure.size > prevClosureSize ||
@@ -329,6 +381,10 @@ class IpyflowSessionState {
           true
         );
       }
+      // console.log(
+      //   '++++ CLOSURE after all shouldIncludeRelated computation stuff: ',
+      //   closure
+      // );
     });
     for (const [child, staleParents] of Object.entries(
       this.staleParentsByChildByExecutedCell?.[cellId] ?? {}
@@ -337,6 +393,10 @@ class IpyflowSessionState {
         continue;
       }
       for (const parent of staleParents) {
+        // console.log(
+        //   '++++ We are computing parent of StaleParents, this is one parent: ',
+        //   parent
+        // );
         if (closure.has(parent) || !edges?.[child]?.includes(parent)) {
           continue;
         }
@@ -348,6 +408,12 @@ class IpyflowSessionState {
           pullReactiveUpdates,
           true
         );
+        // console.log(
+        //   '++++ Closure after computing StaleParents: ',
+        //   closure,
+        //   ', for parent: ',
+        //   parent
+        // );
       }
     }
   }
@@ -399,21 +465,41 @@ class IpyflowSessionState {
   ): Set<string> {
     let cellIds = startCellIds;
     const closure = new Set(cellIds);
-    // console.log('HIT COMPUTE TRANSITIVE CLOSURE RAW!!!');
-    // console.log('cell ids to compute for: ', cellIds);
+    console.log('!!!! HIT COMPUTE TRANSITIVE CLOSURE RAW!!!');
+    console.log('cell ids to compute for: ', cellIds);
+    console.log('=== HAS PARENTS, this.parent is set: ', this.cellParents);
+    console.log('=== HAS CHILDREN, this.children is set: ', this.cellChildren);
+    console.log('=== WRITE CELLS: ', this.writeCells);
+    console.log('=== READ CELLS: ', this.readCells);
 
-    if (cellIds.length == 1) {
-      // console.log('HARD CODE CLOSURE!!');
-      if (cellIds[0] == '562d3363-25c5-40f3-8465-f928b443f951') {
-        closure.add('541c4a68-0c49-4ea5-bf13-c6dc2d38dd42');
-        closure.add('09979862-b4d4-4651-bb84-48845f384066');
+    for (const w_cid of this.writeCells) {
+      for (const r_cid of this.readCells) {
+        console.log('updating read dependency for write cell: ', w_cid);
+        if (!this.cellChildren[w_cid].includes(r_cid)) {
+          this.cellChildren[w_cid].push(r_cid);
+        }
+        if (!this.cellParents[r_cid].includes(w_cid)) {
+          this.cellParents[r_cid].push(w_cid);
+        }
       }
     }
+
+    // if (cellIds.length == 1) {
+    //   // console.log('HARD CODE CLOSURE!!');
+    //   if (cellIds[0] == '562d3363-25c5-40f3-8465-f928b443f951') {
+    //     closure.add('541c4a68-0c49-4ea5-bf13-c6dc2d38dd42');
+    //     closure.add('09979862-b4d4-4651-bb84-48845f384066');
+    //   }
+    // }
     // eslint-disable-next-line no-constant-condition
     while (true) {
       for (const cellId of cellIds) {
-        // console.log('=== HAS PARENTS: ', this.cellParents);
+        console.log('++++ CURRENT CELLID in loop: ', cellId);
         if (parents) {
+          // console.log(
+          //   '++++ YES PARENT, so we pass parent into raw transitive closure: ',
+          //   parent
+          // );
           this.computeRawTransitiveClosureHelper(
             closure,
             cellId,
@@ -422,7 +508,10 @@ class IpyflowSessionState {
             true
           );
         } else {
-          // console.log('=== HAS CHILDREN: ', this.cellChildren);
+          // console.log(
+          //   '++++ NO PARENT, so we pass children into raw transitive closure: ',
+          //   parent
+          // );
           this.computeRawTransitiveClosureHelper(
             closure,
             cellId,
@@ -435,7 +524,12 @@ class IpyflowSessionState {
       if (parents || !(this.settings.pull_reactive_updates ?? false)) {
         break;
       }
+      console.log('==== AFTER DOING THE INITIAL LOOP: ', closure);
       for (const cellId of closure) {
+        // console.log(
+        //   '++++ WE PASS this.cellParents into calculating raw transitive closure helper for all cell in closure: ',
+        //   cellId
+        // );
         this.computeRawTransitiveClosureHelper(
           closure,
           cellId,
@@ -458,9 +552,9 @@ class IpyflowSessionState {
       }
     }
 
-    // console.log('the closure returned: ', closure);
-    // console.log('=== cells ids after closure returned : ', cellIds);
-    // console.log('END COMPUTE RAW TRANSITIVE CLOSURE!!!! RETURNING');
+    console.log('!!!! the main closure function returned: ', closure);
+    console.log('=== cells ids after closure returned : ', cellIds);
+    console.log('!!!! END COMPUTE RAW TRANSITIVE CLOSURE!!!! RETURNING');
     return closure;
   }
 

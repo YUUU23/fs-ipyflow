@@ -18,6 +18,7 @@ from ipyflow.singletons import flow
 from ipyflow.utils.ipython_utils import make_mro_inserter_metaclass
 from ipyflow.utils.misc_utils import is_project_file
 from ipyflow.version import __version__
+import ipyflow.kernel.stracer as stracer
 
 if TYPE_CHECKING:
     from ipykernel.comm import Comm
@@ -224,21 +225,29 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                 # with open ('1234.txt', 'a') as f:
                 #     f.write(f"after making commit {result}\n")
                 #     f.write(f"executed cell: {cell_id}")
+            
                 
             super_ = super()
             if self._has_cell_id:
                 kwargs["cell_id"] = cell_id
-            ret = await super_.do_execute(
-                code,
-                silent,
-                store_history,
-                user_expressions,
-                allow_stdin,
-                **kwargs,
-            )
-        
-            self._maybe_eject()
-            
+                
+            events = stracer.STraceEvent()
+            with stracer.STracer(events): 
+                ret = await super_.do_execute(
+                    code,
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                    **kwargs,
+                )
+                self._maybe_eject()
+            syscall_event = events.check_syscall_occured()
+            if syscall_event: 
+                ret["syscall"] = syscall_event
+            else: 
+                ret["syscall"] = "None"
+                
             commit_script_path = "../scripts/commit.sh"
             commit_result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
             
