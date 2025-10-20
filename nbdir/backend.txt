@@ -138,3 +138,55 @@
 !!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
 === CELLS TO CHECK: [<Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>]
 === CELLS TO CHECK: [<Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>]
+=== CELLS TO CHECK: [<Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>, <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>, <Cell[ctr=-1,id=09979862-b4d4-4651-bb84-48845f384066]>, <Cell[ctr=-1,id=541c4a68-0c49-4ea5-bf13-c6dc2d38dd42]>, <Cell[ctr=-1,id=5f0523e2-16de-40be-8707-97114cf2fdc5]>]
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
+!!!! CURRENT PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, RAW SYMS: {<text>} 
+=== PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, SYMS: {<text>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
+=== CELLS TO CHECK: [<Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>, <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>, <Cell[ctr=-1,id=09979862-b4d4-4651-bb84-48845f384066]>, <Cell[ctr=-1,id=541c4a68-0c49-4ea5-bf13-c6dc2d38dd42]>, <Cell[ctr=-1,id=5f0523e2-16de-40be-8707-97114cf2fdc5]>]
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
+!!!! CURRENT PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, RAW SYMS: {<text>} 
+=== PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, SYMS: {<text>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
+=== CELLS TO CHECK: [<Cell[ctr=3,id=09979862-b4d4-4651-bb84-48845f384066]>]
+!!!! CURRENT PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, RAW SYMS: {<text>} 
+=== PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, SYMS: {<text>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>
+!!!! ADDED NEW par_id to this_cell_parents: {'562d3363-25c5-40f3-8465-f928b443f951'}
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
+=== CELLS TO CHECK: [<Cell[ctr=3,id=09979862-b4d4-4651-bb84-48845f384066]>]
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702'}
+!!!! CURRENT PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, RAW SYMS: {<text>} 
+=== PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, SYMS: {<text>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
+!!!! CURRENT PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, RAW SYMS: {<text>} 
+=== PAR_ID: 562d3363-25c5-40f3-8465-f928b443f951, SYMS: {<text>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=2,id=562d3363-25c5-40f3-8465-f928b443f951]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
+!!!! CURRENT PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, RAW SYMS: {<f>} 
+=== PAR_ID: 86613698-dc31-48f6-8533-3d9ff9cd9702, SYMS: {<f>} (raw syms - cell.static_removed_sym)
+=== PARENT: <Cell[ctr=1,id=86613698-dc31-48f6-8533-3d9ff9cd9702]>
+!!!! ADDED NEW par_id to this_cell_parents: {'86613698-dc31-48f6-8533-3d9ff9cd9702', '562d3363-25c5-40f3-8465-f928b443f951'}
