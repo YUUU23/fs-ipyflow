@@ -510,15 +510,25 @@ class FrontendCheckerResult(NamedTuple):
                 )
 
     def _compute_filtered_parents(self, cells_to_check: List[Cell]) -> None:
+        # with open("backend.txt", 'a') as f:
+        #     f.write(f"=== CELLS TO CHECK: {cells_to_check}\n") 
         flow_ = flow()
         for cell in cells_to_check:
             this_cell_parents: Set[IdType] = set()
             latest_par_by_ts = cell.get_latest_parent_by_ts_map()
             for _ in flow_.mut_settings.iter_slicing_contexts():
                 for par_id, raw_syms in cell.directional_parents.items():
+                    # with open("backend.txt", 'a') as f:
+                    #     f.write(f"!!!! CURRENT PAR_ID: {par_id}, RAW SYMS: {raw_syms} \n") 
                     syms = raw_syms - cell.static_removed_symbols
+                    # with open("backend.txt", 'a') as f:
+                    #     f.write(f"=== PAR_ID: {par_id}, SYMS: {syms} (raw syms - cell.static_removed_sym)\n") 
                     if len(syms) == 0:
+                        # with open("backend.txt", 'a') as f:
+                        #     f.write(f"=== FAILED check (len(syms) === 0); {len(syms)} == 0\n")
                         continue
+                    # with open("backend.txt", 'a') as f:
+                    #     f.write(f"=== flow_.fake_edge_sym: {flow_.fake_edge_sym}, latest_par_by_ts: {latest_par_by_ts[syms.shallow_timestamp]} \n") 
                     if (
                         latest_par_by_ts is not None
                         and flow_.fake_edge_sym not in syms
@@ -528,13 +538,22 @@ class FrontendCheckerResult(NamedTuple):
                             for sym in syms
                         }
                     ):
+                        v = {latest_par_by_ts[sym.shallow_timestamp].cell_id
+                            for sym in syms}
+                        # with open("backend.txt", 'a') as f:
+                        #     f.write(f"=== FAILED check, latest_par_by_ts = {latest_par_by_ts}, flow_.fake_edge_sym = {flow_.fake_edge_sym}, [latest_par_by_ts[sym.shallow_timestamp].cell_id"
+                        #     f" for sym in syms] = {v} \n")
                         continue
                     parent = cells().from_id(par_id)
+                    # with open("backend.txt", 'a') as f:
+                    #     f.write(f"=== PARENT: {parent}\n") 
                     if (
                         parent.last_check_result is not None
                         and syms <= parent.static_writes
                         and len(parent.last_check_result.modified & syms) == 0
                     ):
+                        # with open("backend.txt", 'a') as f:
+                        #     f.write(f"=== FAILED check parent.last_check_result = {parent.last_check_result}, parent.static_writes = {parent.static_writes} \n")
                         continue
                     if parent.cell_ctr >= 0 and not any(
                         parent.cell_ctr
@@ -564,6 +583,8 @@ class FrontendCheckerResult(NamedTuple):
                     if should_skip:
                         continue
                     this_cell_parents.add(par_id)
+                    # with open("backend.txt", 'a') as f:
+                    #     f.write(f"!!!! ADDED NEW par_id to this_cell_parents: {this_cell_parents}\n") 
             self.cell_parents[cell.id] = this_cell_parents
         for cell_id, parents in self.cell_parents.items():
             for parent_id in parents:

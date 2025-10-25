@@ -64,7 +64,7 @@ deps:
 
 devdeps:
 	pip install -e .
-	pip3 install -e "./core[dev]"
+	pip install -e "./core[dev]"
 
 extlink:
 	./scripts/extlink.sh

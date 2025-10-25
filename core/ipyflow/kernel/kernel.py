@@ -205,15 +205,25 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             #     #     f.write("EVERYTHING, KWARGS \n")
             #     #     f.write(f"{kwargs}\n")
             
-            revert_back = kwargs["cell_meta"]["should_revert"]
+            revert_back = kwargs["cell_meta"]["should_revert"] # hash
+            # revert_path = kwargs["cell_meta"]["revert_path"]
+            revert_path_args = kwargs["cell_meta"]["should_revert_file"]
+            current_dir = "nbdir"
+            revert_path = f"{current_dir}/"
+            if revert_path_args != "None":
+                revert_path += f"{revert_path_args}" # specific path to revert
+            
             cell_id = kwargs["cell_meta"]["cellId"]
             commit_initial = kwargs["cell_meta"]['should_commit_prior']
             
+            print('revert back: ', revert_back)
             revert_result = ""
             if revert_back != "None": 
                 revert_script_path = "../scripts/revert.sh"
-                result = subprocess.run(["bash", revert_script_path, revert_back], capture_output=True, text=True)
+                result = subprocess.run(["bash", revert_script_path, revert_back, revert_path], capture_output=True, text=True)
+                print("revert to path: ", revert_path)
                 revert_result = f'{result.stdout.strip()}, reverted {revert_back}'
+                print("revert result: ", revert_result)
                 # with open ('1234.txt', 'a') as f:
                 #     f.write(f"CELL IS ACTIVE!!!!! WE WILL REVERT {revert_back}, revert result: {result} \n")    
             
@@ -245,8 +255,6 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             syscall_event = events.check_syscall_occured()
             if syscall_event: 
                 ret["syscall"] = syscall_event
-            else: 
-                ret["syscall"] = "None"
                 
             commit_script_path = "../scripts/commit.sh"
             commit_result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)

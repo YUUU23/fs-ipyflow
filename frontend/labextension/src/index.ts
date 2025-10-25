@@ -84,6 +84,7 @@ class IpyflowSessionState {
   settings: { [key: string]: string } = {};
   lastCellMetadataMap: CellMetadataMap | null = null;
   commit_map: { [id: string]: string } = {};
+  cell_to_file_map: { [id: string]: string } = {};
   initialCommit = '';
   readCells: Set<string> = new Set();
   writeCells: Set<string> = new Set();
@@ -132,7 +133,11 @@ class IpyflowSessionState {
     for (const cell of cells) {
       // make commit for state
       // if any of them fail, change the [*] to [ ] on subsequent cells
-      let active_meta = { should_revert: '', should_commit_prior: false };
+      let active_meta = {
+        should_revert: 'None',
+        should_revert_file: 'None',
+        should_commit_prior: false,
+      };
       // console.log('active cell id: ', this.activeCell.model.id);
       // console.log('current cell: ', cell.model.id);
       if (cell && this.activeCell && cell.model && this.activeCell.model) {
@@ -171,6 +176,21 @@ class IpyflowSessionState {
                 nearestPrevCellIdx -= 1;
               }
             }
+            console.log('CELL TO FILE MAP: ', this.cell_to_file_map);
+            if (cid in this.cell_to_file_map) {
+              active_meta['should_revert_file'] = this.cell_to_file_map[cid];
+            } else {
+              const children = this.cellChildren[cid];
+              console.log('SYS CALL CHILD: ', children);
+              for (const c_cid of children) {
+                console.log('SYS CALL CHILD LOOP: ', c_cid);
+                if (c_cid in this.cell_to_file_map) {
+                  console.log('SYS CALL CHILD IN MAP: ', c_cid);
+                  active_meta['should_revert_file'] =
+                    this.cell_to_file_map[c_cid];
+                }
+              }
+            }
           }
 
           // console.log('+++++ hash before setting: ', hash);
@@ -185,8 +205,46 @@ class IpyflowSessionState {
           //   hash
           // );
           active_meta['should_revert'] = hash;
+          console.log('ACTIVE META: ', active_meta);
         }
       }
+
+      const registerSyscallFS = (sysCall: string[], cid: string) => {
+        if (!sysCall || sysCall.length < 2) {
+          return;
+        }
+
+        const sysCall_event: string = sysCall[0];
+        const sysCall_fname: string = sysCall[1];
+        if (sysCall_event && (sysCall_event != '' || sysCall.length > 0)) {
+          console.log(
+            'entering syscall updating loop: ',
+            sysCall_event,
+            sysCall_fname
+          );
+          this.cell_to_file_map[cid] = sysCall_fname;
+          if (sysCall_event.trim() == 'read') {
+            console.log('HANDLING READ!!!');
+            this.readCells.add(cid);
+            for (const w_cid of this.writeCells) {
+              console.log('updating read dependency for write cell: ', w_cid);
+              if (!this.cellChildren[w_cid].includes(cid)) {
+                this.cellChildren[w_cid].push(cid);
+              }
+              if (!this.cellParents[cid].includes(w_cid)) {
+                this.cellParents[cid].push(w_cid);
+              }
+            }
+            console.log('current read cell: ', this.readCells);
+            console.log('current write cell: ', this.writeCells);
+            console.log('parent after: ', this.cellParents);
+            console.log('children after: ', this.cellChildren);
+          } else if (sysCall_event.trim() == 'write') {
+            console.log('HANDLING WRITE!!!');
+            this.writeCells.add(cid);
+          }
+        }
+      };
 
       CodeCell.execute(cell as CodeCell, this.session, active_meta).then(
         (data) => {
@@ -196,6 +254,7 @@ class IpyflowSessionState {
             const commitHash = content['commit_hash'];
             const initialCommitHash = content['commit_initial'];
             const sysCall = content['syscall'];
+
             if (initialCommitHash) {
               this.initialCommit = initialCommitHash;
               console.log(
@@ -215,32 +274,7 @@ class IpyflowSessionState {
             // Update parent children dependency to relate
             // all read cells with write cells.
             // TODO: Currently doesn't work, map objects are different
-            if (!sysCall.includes('None')) {
-              console.log('entering syscall updating loop: ', sysCall);
-              if (sysCall.trim() == 'read') {
-                console.log('HANDLING READ!!!');
-                this.readCells.add(cid);
-                for (const w_cid of this.writeCells) {
-                  console.log(
-                    'updating read dependency for write cell: ',
-                    w_cid
-                  );
-                  if (!this.cellChildren[w_cid].includes(cid)) {
-                    this.cellChildren[w_cid].push(cid);
-                  }
-                  if (!this.cellParents[cid].includes(w_cid)) {
-                    this.cellParents[cid].push(w_cid);
-                  }
-                }
-                console.log('current read cell: ', this.readCells);
-                console.log('current write cell: ', this.writeCells);
-                console.log('parent after: ', this.cellParents);
-                console.log('children after: ', this.cellChildren);
-              } else if (sysCall.trim() == 'write') {
-                console.log('HANDLING WRITE!!!');
-                this.writeCells.add(cid);
-              }
-            }
+            registerSyscallFS(sysCall, cid);
           }
           if (cell.promptNode.textContent?.includes('[*]')) {
             // can happen if a preceding cell errored
@@ -472,14 +506,27 @@ class IpyflowSessionState {
     console.log('=== WRITE CELLS: ', this.writeCells);
     console.log('=== READ CELLS: ', this.readCells);
 
-    for (const w_cid of this.writeCells) {
-      for (const r_cid of this.readCells) {
-        console.log('updating read dependency for write cell: ', w_cid);
-        if (!this.cellChildren[w_cid].includes(r_cid)) {
-          this.cellChildren[w_cid].push(r_cid);
-        }
-        if (!this.cellParents[r_cid].includes(w_cid)) {
-          this.cellParents[r_cid].push(w_cid);
+    // for (const w_cid of this.writeCells) {
+    //   for (const r_cid of this.readCells) {
+    //     console.log('updating read dependency for write cell: ', w_cid);
+    //     if (!this.cellChildren[w_cid].includes(r_cid)) {
+    //       this.cellChildren[w_cid].push(r_cid);
+    //     }
+    //     if (!this.cellParents[r_cid].includes(w_cid)) {
+    //       this.cellParents[r_cid].push(w_cid);
+    //     }
+    //   }
+    // }
+
+    if (cellIds.length == 1) {
+      // console.log('HARD CODE CLOSURE!!');
+      const cid = cellIds[0];
+      if (cid in this.cell_to_file_map) {
+        const fname = this.cell_to_file_map[cid];
+        for (const cid in this.cell_to_file_map) {
+          if (this.cell_to_file_map[cid] == fname) {
+            closure.add(cid);
+          }
         }
       }
     }

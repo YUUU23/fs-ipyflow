@@ -3,6 +3,7 @@ import tempfile
 import platform
 import os
 import time
+from collections import defaultdict
 
 """
 with open(fp) as f:
@@ -25,24 +26,41 @@ do stuff with trace_events
 """
 
 class STraceEvent():
-    SYSCALLS = [
+    FS_SYSCALLS = [
         "write",
         "read",
+        "open", 
     ]
 
     def __init__(self):
         self.tmp_file = tempfile.NamedTemporaryFile(delete=False, mode="w+")
 
-    def parse_fs_usage_events(self) -> str:
-        save_syscall = None
+    def parse_fs_usage_events(self) -> list[str, str]:
+        opened_fd_to_fname = defaultdict(str)
         with open(self.tmp_file.name) as f:
             for line in f:
-                # print("parsed line in fs: ", line)
                 tokens = [token for token in line.split() if token]
+                # print('Tokens: ', tokens)
                 syscall = tokens[1]
-                if syscall in self.SYSCALLS:
-                    return syscall
-        return save_syscall
+                if syscall in self.FS_SYSCALLS:
+                    fd = int(tokens[2].split("=")[1])
+                    if syscall == "open":
+                        fname = tokens[4]
+                        opened_fd_to_fname[fd] = fname
+                    elif syscall == "read": 
+                        if fd not in opened_fd_to_fname: 
+                            raise ValueError("fd not found; read case")
+                        fname = opened_fd_to_fname[fd]
+                        print("!!! READ FNAME FOUND READ: ", fname)
+                        return (syscall, fname)
+                    elif syscall == "write": 
+                        if fd not in opened_fd_to_fname: 
+                            raise ValueError("fd not found; write case")
+                        fname = opened_fd_to_fname[fd]
+                        print("!!! READ FNAME FOUND WRITE: ", fname)
+                        return (syscall, fname)
+        
+        return ("", "")
 
     def check_syscall_occured(self) -> bool:
         if platform.system() == "Darwin":
@@ -103,4 +121,4 @@ class STracer():
             time.sleep(0.5)
             if not self.strace_process.poll():
                 # print("Killing")
-                self.strace_process.kill() 
+                self.strace_process.kill() # kill if still not terminated
