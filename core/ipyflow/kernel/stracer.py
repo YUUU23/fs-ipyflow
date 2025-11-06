@@ -5,26 +5,6 @@ import os
 import time
 from collections import defaultdict
 
-"""
-with open(fp) as f:
-    ...
-"""
-
-
-"""
-with STracer() as f: // Stracer.__enter__
-                //  - Spawn a subprocess which straces the current process, and the current process' children excluding strace itself
-                //  - Write all strace events to a tmp file
-    ...
-    trace_events = f.parse_trace_events()
-    // Exit context ->
-    // Stracer.__exit__
-    //  - Delete tmp file
-    //  - Remove strace sub process
-
-do stuff with trace_events
-"""
-
 class STraceEvent():
     FS_SYSCALLS = [
         "write",
@@ -40,7 +20,6 @@ class STraceEvent():
         with open(self.tmp_file.name) as f:
             for line in f:
                 tokens = [token for token in line.split() if token]
-                # print('Tokens: ', tokens)
                 syscall = tokens[1]
                 if syscall in self.FS_SYSCALLS:
                     fd = int(tokens[2].split("=")[1])
@@ -51,18 +30,18 @@ class STraceEvent():
                         if fd not in opened_fd_to_fname: 
                             raise ValueError("fd not found; read case")
                         fname = opened_fd_to_fname[fd]
-                        print("!!! READ FNAME FOUND READ: ", fname)
+                        print("== [backend print] !!! FNAME FOUND READ: ", fname)
                         return (syscall, fname)
                     elif syscall == "write": 
                         if fd not in opened_fd_to_fname: 
                             raise ValueError("fd not found; write case")
                         fname = opened_fd_to_fname[fd]
-                        print("!!! READ FNAME FOUND WRITE: ", fname)
+                        print("== [backend print] !!! FNAME FOUND WRITE: ", fname)
                         return (syscall, fname)
         
         return ("", "")
 
-    def check_syscall_occured(self) -> bool:
+    def check_syscall_occurred(self) -> bool:
         if platform.system() == "Darwin":
             return self.parse_fs_usage_events()
         elif platform.system() == "Linux":
@@ -102,9 +81,11 @@ class STracer():
         cur_pid = os.getpid()
 
         if platform.system() == "Darwin":
-            self.call_fs_usage(cur_pid) # Use fs_usage on mac, watch for cur_pid (nb)
+            # Use fs_usage on mac, watch for cur_pid (nb)
+            self.call_fs_usage(cur_pid) 
         elif platform.system() == "Linux":
-            self.call_strace(cur_pid) # Use strace on Linux, watch for cur_pin (nb)
+            # Use strace on Linux, watch for cur_pin (nb)
+            self.call_strace(cur_pid) 
         else:
             raise OSError("Unsupported Platform!")
         time.sleep(0.5) # wait for spawn
@@ -113,12 +94,9 @@ class STracer():
         time.sleep(1)
         self.strace_events.tmp_file.flush() # flush tmp file
         if self.strace_process:
-            # print(f"Cleaning process with pid {self.strace_process.pid}")
             if not self.strace_process.poll(): # not terminated 
-                # print("Terminating")
                 self.strace_process.terminate() # terminate
 
             time.sleep(0.5)
             if not self.strace_process.poll():
-                # print("Killing")
                 self.strace_process.kill() # kill if still not terminated

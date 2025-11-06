@@ -193,48 +193,33 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
             cell_id=None,
             **kwargs,
         ):
-            # make commit on cell execution 
             super_ = super()
-            # with open ('1234.txt', 'a') as f:
-            #     f.write("we got called do_execute in kernel\n")
-            #     f.write("making commit before cell runs!\n")
             
-            # revert if the cell is the active cell. 
-            # if kwargs:
-            #     # with open ('1234.txt', 'a') as f:
-            #     #     f.write("EVERYTHING, KWARGS \n")
-            #     #     f.write(f"{kwargs}\n")
-            
-            revert_back = kwargs["cell_meta"]["should_revert"] # hash
-            # revert_path = kwargs["cell_meta"]["revert_path"]
-            revert_path_args = kwargs["cell_meta"]["should_revert_file"]
+            # === FS commit and revert
+            NULL_STR = "None"
             current_dir = "nbdir"
             revert_path = f"{current_dir}/"
-            if revert_path_args != "None":
+            
+            revert_back = kwargs["cell_meta"].get("should_revert", NULL_STR) 
+            revert_path_args = kwargs["cell_meta"].get("should_revert_file", "")
+            print("== [backend print] file to revert: ", revert_path_args)
+            if revert_path_args != NULL_STR:
                 revert_path += f"{revert_path_args}" # specific path to revert
             
-            cell_id = kwargs["cell_meta"]["cellId"]
-            commit_initial = kwargs["cell_meta"]['should_commit_prior']
+            cell_id = kwargs["cell_meta"].get("cellId", "")
+            commit_initial = kwargs["cell_meta"].get('should_commit_prior', None)
             
-            print('revert back: ', revert_back)
-            revert_result = ""
-            if revert_back != "None": 
+            if revert_back != NULL_STR: 
                 revert_script_path = "../scripts/revert.sh"
-                result = subprocess.run(["bash", revert_script_path, revert_back, revert_path], capture_output=True, text=True)
-                print("revert to path: ", revert_path)
-                revert_result = f'{result.stdout.strip()}, reverted {revert_back}'
-                print("revert result: ", revert_result)
-                # with open ('1234.txt', 'a') as f:
-                #     f.write(f"CELL IS ACTIVE!!!!! WE WILL REVERT {revert_back}, revert result: {result} \n")    
+                subprocess.run(["bash", revert_script_path, revert_back, revert_path], capture_output=True, text=True)
+                print("== [backend print] revert to path: ", revert_path)
             
+            # On execution of the first cell, we should create an initial commit.
             initial_commit_result = ""
             if commit_initial: 
                 commit_script_path = "../scripts/commit.sh"
                 res = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
                 initial_commit_result = res.stdout.strip()
-                # with open ('1234.txt', 'a') as f:
-                #     f.write(f"after making commit {result}\n")
-                #     f.write(f"executed cell: {cell_id}")
             
                 
             super_ = super()
@@ -252,15 +237,15 @@ class IPyflowKernel(singletons.IPyflowKernel, IPythonKernel):  # type: ignore
                     **kwargs,
                 )
                 self._maybe_eject()
-            syscall_event = events.check_syscall_occured()
+            syscall_event = events.check_syscall_occurred()
             if syscall_event: 
                 ret["syscall"] = syscall_event
                 
+            # Commit after cell has executed.
             commit_script_path = "../scripts/commit.sh"
             commit_result = subprocess.run(["bash", commit_script_path], capture_output=True, text=True)
             
             ret["commit_hash"] = commit_result.stdout.strip()
-            ret["reverted"] = revert_result
             ret["commit_initial"] = initial_commit_result
             return ret
 
